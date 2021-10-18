@@ -70,11 +70,8 @@ public class MovieController {
         movieEntity.setScore(movieEntityRequest.getScore());
         movieEntity.setStatus(movieEntityRequest.getStatus());
         movieEntity.setRankBoardEntities(movieEntityRequest.getRankBoardEntities());
-        RankBoardEntity rankBoardEntity = new RankBoardEntity();
-        rankBoardEntity.setMovieEntity(movieEntityRequest); // add rank board with movie_id(key)
-        rankBoardEntity = rankBoardRepository.save(rankBoardEntity);
-        movieEntity = movieRepository.save(movieEntity);
-
+        rankBoardRepository.saveAll(movieEntityRequest.getRankBoardEntities());  //save to rankBoard table
+        movieRepository.save(movieEntity);
         return 1;
     }
     //NativeQuery
@@ -106,6 +103,7 @@ public class MovieController {
         if(movieRepository.findByIdMovie(idMovie).equals(null)){
             System.out.println("movie is not exists");
         }
+        rankBoardRepository.deleteByIdMovie(idMovie);
         movieRepository.deleteById(idMovie);
     }
 }

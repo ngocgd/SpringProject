@@ -30,7 +30,7 @@ public class MovieEntity {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "movieEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "movieEntity") // cascade = CascadeType.ALL : Auto save to "rankBoard" after update "movie"
     @JsonManagedReference
     private List<RankBoardEntity> rankBoardEntities;
 
