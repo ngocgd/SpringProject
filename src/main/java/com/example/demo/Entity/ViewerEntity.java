@@ -1,16 +1,16 @@
 package com.example.demo.Entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "viewer")
 public class ViewerEntity {
     @Id
@@ -22,4 +22,6 @@ public class ViewerEntity {
     private String passWord;
     @Column(name = "email")
     private String emai;
+
+
 }

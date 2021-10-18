@@ -2,7 +2,9 @@ package com.example.demo.Controller;
 
 import com.example.demo.Controller.Request.MovieRequest;
 import com.example.demo.Entity.MovieEntity;
+import com.example.demo.Entity.RankBoardEntity;
 import com.example.demo.Repository.MovieRepository;
+import com.example.demo.Repository.RankBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,8 @@ import java.util.List;
 public class MovieController {
     @Autowired
     MovieRepository movieRepository;
+    @Autowired
+    RankBoardRepository rankBoardRepository;
     @GetMapping(value = {"/findAll"})
     public List<MovieEntity> findAll(){
         return movieRepository.findAll();
@@ -54,18 +58,24 @@ public class MovieController {
 
     }
     //update and put
-    @PostMapping(value = {"/addMovie"})
-    public MovieEntity addMovie(@RequestBody MovieRequest movieRequest){
+
+    @PostMapping(value = {"/addMovie"}) // update with association one to many
+    public int addMovie(@RequestBody MovieEntity movieEntityRequest ){
         MovieEntity movieEntity = new MovieEntity();
-        movieEntity.setIdMovie(movieRequest.getIdMovie());
-        movieEntity.setName(movieRequest.getName());
-        movieEntity.setUrlImage(movieRequest.getUrlImage());
-        movieEntity.setYear(movieRequest.getYear());
-        movieEntity.setType(movieRequest.getType());
-        movieEntity.setScore(movieRequest.getScore());
-        movieEntity.setStatus(movieRequest.getStatus());
+        movieEntity.setIdMovie(movieEntityRequest.getIdMovie());
+        movieEntity.setName(movieEntityRequest.getName());
+        movieEntity.setUrlImage(movieEntityRequest.getUrlImage());
+        movieEntity.setYear(movieEntityRequest.getYear());
+        movieEntity.setType(movieEntityRequest.getType());
+        movieEntity.setScore(movieEntityRequest.getScore());
+        movieEntity.setStatus(movieEntityRequest.getStatus());
+        movieEntity.setRankBoardEntities(movieEntityRequest.getRankBoardEntities());
+        RankBoardEntity rankBoardEntity = new RankBoardEntity();
+        rankBoardEntity.setMovieEntity(movieEntityRequest); // add rank board with movie_id(key)
+        rankBoardEntity = rankBoardRepository.save(rankBoardEntity);
         movieEntity = movieRepository.save(movieEntity);
-        return movieEntity;
+
+        return 1;
     }
     //NativeQuery
     @PostMapping(value = {"/udpateMovie2/{idMovie}/{year}"})
